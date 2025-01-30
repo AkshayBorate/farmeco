@@ -1,0 +1,75 @@
+.price .items {
+  padding: 40px;
+  text-align: center;
+  border-radius: 1rem;
+  background-color: rgb(2, 4, 34);
+  color: white;
+  margin-bottom: 40px;
+  
+}
+
+.price h1 {
+  font-size: 50px;
+  margin: 20px 0;
+  color: #1eb2a6;
+  
+}
+.pricecs{
+  margin-top: -150px;
+}
+
+.price h1 span {
+  font-size: 20px;
+  margin-right: 5px;
+  color: #000;
+}
+
+.price p {
+  color: grey;
+  margin: 40px 0;
+}
+
+/*-------------- FAQ -------------*/
+.faq .container {
+  max-width: 70%;
+  border-radius: 1rem; /* Removed the incorrect '!' */
+  font-size: 10px; /* Removed '!important' */
+  
+}
+
+.faq .box {
+  background-color: #fff;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.faq button {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.faq h2 {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.faq p {
+  padding: 20px;
+}
+
+.faq .accordion:hover {
+  background-color: #1eb2a6;
+  color: #fff;
+}
+
+.faq .accordion {
+  font-size: 20px; /* Removed '!important' */
+}
+
+.hprice {
+  margin-bottom: 100px; /* Removed '!important' */
+}
+/*-------------- End FAQ -------------*/

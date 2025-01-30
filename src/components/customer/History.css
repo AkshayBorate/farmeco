@@ -1,0 +1,115 @@
+/* FarmerOrderHistory.css
+
+.order-history {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .order-card {
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.2s;
+  }
+  
+  .order-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .order-card p {
+    margin: 0;
+  }
+   */
+
+
+   /* History.css */
+/* History.css */
+
+/* Page background */
+body {
+  background: #f0f8ff; /* Light blue background */
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* General container styling */
+.order-history {
+  background: #ffffff; /* White background for main container */
+  margin: 30px auto;
+  max-width: 1000px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.order-history h2 {
+  color: #2c3e50; /* Dark blue color */
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Card container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual order card styling */
+.order-card {
+  background: #f9f9f9; /* Soft gray background */
+  border: 1px solid #d4e0e7;
+  border-radius: 10px;
+  padding: 20px;
+  width: 280px;
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for the card */
+.order-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: #e6f7e6; /* Light green background on hover */
+  border-color: #4CAF50; /* Green border on hover */
+}
+
+/* Card content styling */
+.order-card p {
+  margin: 10px 0;
+  color: #555;
+  font-size: 1rem;
+}
+
+.order-card p strong {
+  color: #2c3e50; /* Dark blue */
+  font-weight: 600;
+}
+
+/* Responsive Design for small screens */
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .order-card {
+    width: 90%;
+    margin: 0 auto;
+  }
+}

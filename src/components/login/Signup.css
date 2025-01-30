@@ -1,0 +1,140 @@
+.signup-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background:url(../../../public/images/loginback.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    overflow: hidden;
+}
+
+
+.signup-card {
+    background:transparent;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 420px;
+    padding: 20px;
+    /* height: 90vh; */
+    transform: scale(0.95);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.signup-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.signup-header {
+    font-size: 20px;
+    color: #1cb5c9;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    animation: fadeInDown 1s ease;
+}
+
+/* Form */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input Fields */
+.signup-input-field {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    color: #3d9fb8;
+
+    font-size: 16px;
+    background-color:transparent !important;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.signup-input-field:focus {
+    border-color: #6a11cb;
+    background-color:transparent !important;
+    box-shadow: 0 0 8px rgba(106, 17, 203, 0.2);
+}
+
+/* Submit Button */
+.signup-btn {
+    padding: 15px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.signup-btn:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    transform: translateY(-5px);
+}
+
+/* Error Message */
+.signup-error-message {
+    color: #e63946;
+    font-size: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+}
+
+/* Footer */
+.signup-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
+    color: #fc0202;
+}
+
+.signup-link {
+    color: #6a11cb;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #2575fc;
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,204 @@
+ .contain{
+    background-color: rgb(2, 4, 34);
+    
+ }
+ .backsize{
+  width: 1200px !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+ }
+  h1 .emph1{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+ }
+ 
+.admin-home {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    color: rgb(0, 185, 40) ;
+    max-width: 1200px;
+    margin: 0 auto;
+    
+  }
+  
+  .welcome-banner {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .welcome-banner h1 {
+    color:white;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-banner p {
+    font-size: 1.2rem;
+    color: rgb(20, 204, 29)
+  }
+  
+  .quick-links button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .quick-links button:hover {
+    background-color: #45a049;
+  }
+  
+  .key-metrics,
+  .quick-actions,
+  .analytics-overview,
+  .pending-actions {
+    margin-bottom: 30px;
+  }
+  
+  .key-metrics h2,
+  .quick-actions h2,
+  .analytics-overview h2,
+  .pending-actions h2 {
+    color: rgb(255, 255, 255);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .metrics-grid,
+  .actions-grid,
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    /* width: 300px; */
+  }
+  
+  .metric-card {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #3cbe1b;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .metric-card h3 {
+    color: rgb(46, 182, 28);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .metric-card p {
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .chart-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .chart-placeholder {
+    height: 150px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .pending-actions ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    color: #555;
+  }
+  
+  .pending-actions li {
+    margin-bottom: 10px;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #2e7d32;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    margin-top: 30px;
+  }
+  
+  .footer p {
+    margin: 5px 0;
+  }
+  
+
+  /* All Employyeee CSSS */
+
+
+  .emph1 {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .backsize {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th, .table td {
+    padding: 12px;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .table th {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .table td {
+    background-color: #f4f4f4;
+  }
+  
+  .table-bordered {
+    border: 1px solid #ddd;
+  }
+  
+  .thead-dark {
+    background-color: #2c3e50;
+  }
+  
+  .mt-5 {
+    margin-top: 3rem;
+  }
+  
