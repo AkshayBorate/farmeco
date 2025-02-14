@@ -1,108 +1,132 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Login.css";
 
-export default function LoginPage() {
-    const [errorMessage, setErrorMessage] = useState("");
-    const usernameRef = useRef();
-    const passwordRef = useRef();
-    const navigate = useNavigate();
+export default function RoleBasedLogin() {
+  const [role, setRole] = useState("customer");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-    const handleSignIn = async () => {
-        const username = usernameRef.current.value.trim();
-        const password = passwordRef.current.value.trim();
+  const handleLogin = async () => {
+    setErrorMessage("");
 
-        // Validate input fields
-        if (!username || !password) {
-            setErrorMessage("Please fill out both fields!");
-            return;
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage("Please fill out both fields!");
+      return;
+    }
+
+    try {
+      const loginData = { email, password };
+      const apiUrl =
+        role === "customer"
+          ? "http://localhost:8085/api/farmers/login"
+          : "http://localhost:8085/api/employee/login";
+
+      const response = await axios.post(apiUrl, loginData);
+
+      if (response.status === 200) {
+        const { id, role: userRole } = response.data;
+        let dashboardPath = "";
+
+        if (role === "customer") {
+          // For customer role, directly route without role validation
+          dashboardPath = "/custheader/dashboard";
+          localStorage.setItem("userId", id);
+        } else if (userRole === "ADMIN") {
+          dashboardPath = "/admindash/home";
+          localStorage.setItem("adminId", id);
+        } else if (userRole === "EMPLOYEE") {
+          dashboardPath = "/empdash/dashboard";
+          localStorage.setItem("employeeId", id);
+        } else {
+          setErrorMessage("Unauthorized access!");
+          return;
         }
 
-        try {
-            const response = await fetch("http://localhost:8084/getall", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        alert("Login successful!");
+        navigate(dashboardPath);
+      } else {
+        setErrorMessage("Invalid email or password.");
+      }
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.message || "Error while logging in. Please try again later."
+      );
+      console.error(error);
+    }
+  };
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch user data.");
-            }
-
-            const users = await response.json();
-
-            // Check if user exists
-            const user = users.find(
-                (u) => u.email === username && u.password === password
-            );
-
-            if (user) {
-                alert("Login successful!");
-                navigate("/custheader/dashboard");
-            } else {
-                setErrorMessage("Invalid username or password.");
-            }
-        } catch (error) {
-            console.error(error);
-            setErrorMessage("An error occurred while signing in. Please try again later.");
-        }
-    };
-
-    return (
-        <div className="unique-login-page">
-            <div className="unique-login-container">
-                <div className="unique-form-container">
-                    <Link to="/loginc" className="signup-link">Back</Link>
-                    <h2 className="unique-form-title">Sign In</h2>
-                    <form
-                        className="unique-form unique-signin-form"
-                        onSubmit={(e) => e.preventDefault()}
-                    >
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
-                        <div className="unique-form-group">
-                            <label htmlFor="username">Username (Email)</label>
-                            <input
-                                className="unique-form-input"
-                                type="text"
-                                name="username"
-                                placeholder="Enter your username"
-                                ref={usernameRef}
-                                required
-                            />
-                        </div>
-                        <div className="unique-form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className="unique-form-input"
-                                type="password"
-                                name="password"
-                                placeholder="Enter your password"
-                                ref={passwordRef}
-                                required
-                            />
-                        </div>
-                        <div className="unique-form-options">
-                            <label className="unique-checkbox-label">
-                                <input type="checkbox" id="keepSignedIn" />
-                                Keep me signed in
-                            </label>
-                        </div>
-                        <button
-                            type="button"
-                            className="unique-form-submit-button"
-                            onClick={handleSignIn}
-                        >
-                            Sign In
-                        </button>
-                    </form>
-                    <div className="unique-signup-link">
-                        <p>
-                            Don't have an account? <Link to="/signup">Sign Up</Link>
-                        </p>
-                    </div>
-                </div>
+  return (
+    <div className="unique-login-page">
+      <div className="unique-login-container">
+        <div className="unique-form-container">
+          <Link to="/" className="signup-link">Back</Link>
+          <h2 className="unique-form-title">Sign In</h2>
+          <form
+            className="unique-form unique-signin-form"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div className="unique-form-group">
+              <label htmlFor="role">Select Role</label>
+              <select
+                className="unique-form-input"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="customer">Customer</option>
+                <option value="admin">Admin/Employee</option>
+              </select>
             </div>
+
+            <div className="unique-form-group">
+              <label>Email</label>
+              <input
+                className="unique-form-input"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="unique-form-group">
+              <label>Password</label>
+              <input
+                className="unique-form-input"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+            <button
+              type="button"
+              className="unique-form-submit-button"
+              onClick={handleLogin}
+            >
+              Sign In
+            </button>
+
+            {role === "customer" && (
+              <div className="unique-signup-link">
+                <p>
+                  Don't have an account? <Link to="/signup">Sign Up</Link>
+                </p>
+                <p>
+                  <Link to="/forpass">Forgot Password</Link>
+                </p>
+              </div>
+            )}
+          </form>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

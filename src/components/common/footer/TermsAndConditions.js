@@ -8,7 +8,7 @@ const TermsAndConditions = () => {
       
       <section>
         <h2>1. Introduction</h2>
-        <p>Welcome to Jai Kisan Agro Services! These Terms and Conditions govern your use of our platform, services, and products. By accessing or using GrowAgro's services, you agree to be bound by these terms.</p>
+        <p>Welcome to FarmEco Services! These Terms and Conditions govern your use of our platform, services, and products. By accessing or using GrowAgro's services, you agree to be bound by these terms.</p>
       </section>
 
       <section>

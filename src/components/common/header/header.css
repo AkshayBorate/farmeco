@@ -36,7 +36,10 @@
 
 .loginc{
 
-  margin-left: 350px;
+  margin-left: auto;
+}
+.headlogin{
+  margin-left: 600px;
 }
 
 header {

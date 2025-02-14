@@ -11,6 +11,7 @@ import Contact from "./components/contact/Contact";
 import Footer from "./components/common/footer/Footer";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
+import Serve from "./components/common/footer/Serve";
 
 
 function App() {
@@ -19,8 +20,8 @@ function App() {
 {/* {role=='admin'?<>:<></>} */}
         <Header />
        <Outlet/>
-
-        <Footer />
+        
+        {/* <Footer /> */}
         </>
     
   );

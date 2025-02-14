@@ -1,112 +1,219 @@
-import React, { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js"; // Move this import to the top
-import "./Dashboard.css"; // Import your CSS
+import React, { useEffect, useState } from "react";
+import {
+  LineChart, Line,
+  PieChart, Pie, Cell,
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend
+} from "recharts";
+import "./Dashboard.css";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-
-const Dashboard = () => {
-  const [metrics, setMetrics] = useState({
-    totalWasteProcessed: 1500,
-    totalWasteRemaining: 250,
-    totalCyclesCompleted: 20,
-    availableProducts: 600,
-    wasteIntakeData: [
-      { date: "2024-01-01", volume: 120 },
-      { date: "2024-01-02", volume: 180 },
-      { date: "2024-01-03", volume: 220 },
-      { date: "2024-01-04", volume: 200 },
-      { date: "2024-01-05", volume: 250 },
-      { date: "2024-01-06", volume: 300 },
-    ],
-    recentCollections: [
-      { location: "Green Valley Farms", wasteType: "Crop Residue", quantity: "5 tons" },
-      { location: "Sunnydale Orchards", wasteType: "Fruit Waste", quantity: "3 tons" },
-      { location: "Evergreen Plantation", wasteType: "Leaf Litter", quantity: "2 tons" },
-    ],
-    processingUpdates: [
-      { facility: "Green Earth Processing Unit", status: "Composted 8 tons of waste" },
-      { facility: "Eco Biogas Plant", status: "Converted 5 tons into biogas" },
-      { facility: "AgriRecycle Center", status: "Recycled 2 tons into mulch" },
-    ],
-  });
+export default function EmployeeDashboard() {
+  const [providerCount, setProviderCount] = useState(0);
+  const [farmerCount, setFarmerCount] = useState(0);
+  const [satisfactionRatings, setSatisfactionRatings] = useState([
+    { name: "Farmers", rating: 0 },
+  ]);
+  const [wasteCollectionData, setWasteCollectionData] = useState([]);
+  const [wasteDistributionData, setWasteDistributionData] = useState([]);
+  const [totalWasteCollected, setTotalWasteCollected] = useState(0);
+  const [processedWaste, setProcessedWaste] = useState(0);
+  const [carbonSavings, setCarbonSavings] = useState(0);
+  const [employeeName, setEmployeeName] = useState(""); 
 
   useEffect(() => {
-    const fetchData = () => {
-      setMetrics(prevMetrics => ({ ...prevMetrics }));
-    };
-    fetchData();
+    const employeeIds = localStorage.getItem("employeeId");
+
+    console.log("Employee ID from localStorage:", employeeIds); // Log employeeId for debugging
+
+    if (employeeIds) {
+      fetch(`http://localhost:8085/api/employee/${employeeIds}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch employee details");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Employee data fetched:", data);
+          if (data && data.name) {
+            setEmployeeName(data.name); 
+          } else {
+            console.error("Name not found in API response.");
+          }
+        })
+        .catch((error) => console.error("Error fetching employee details:", error));
+    } else {
+      console.error("Employee ID not found in localStorage.");
+    }
+
+    fetch("http://localhost:8085/api/employee/count")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch provider count");
+        }
+        return response.text();
+      })
+      .then((count) => setProviderCount(parseInt(count, 10)))
+      .catch((error) => console.error("Error fetching provider count:", error));
+
+    fetch("http://localhost:8085/api/farmers/count")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch farmer count");
+        }
+        return response.text();
+      })
+      .then((count) => setFarmerCount(parseInt(count, 10)))
+      .catch((error) => console.error("Error fetching farmer count:", error));
+
+    fetch("http://localhost:8085/reviews/average")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch satisfaction ratings");
+        }
+        return response.json();
+      })
+      .then((rating) => {
+        const percentageRating = (rating / 5) * 100;
+        setSatisfactionRatings([{ name: "Farmers", rating: percentageRating }]);
+      })
+      .catch((error) => console.error("Error fetching satisfaction ratings:", error));
+
+    fetch("http://localhost:8085/waste-details/orders")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch waste details");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const collectionData = data.map((item) => ({
+          month: new Date(item.createdAt).toLocaleString("default", { month: "short" }),
+          waste: item.status === "COLLECTED" ? 1 : 0,
+        }));
+
+        const distributionData = data.reduce((acc, item) => {
+          const wasteType = item.wasteType;
+          const existingEntry = acc.find((entry) => entry.name === wasteType);
+          if (existingEntry) {
+            existingEntry.value += 1;
+          } else {
+            acc.push({ name: wasteType, value: 1 });
+          }
+          return acc;
+        }, []);
+
+        setWasteCollectionData(collectionData);
+        setWasteDistributionData(distributionData);
+      })
+      .catch((error) => console.error("Error fetching waste details:", error));
+
+    fetch("http://localhost:8085/intake/get")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch total waste collected");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const totalWeight = data.reduce((sum, item) => sum + item.weight, 0);
+        setTotalWasteCollected(totalWeight / 1000);
+
+        const calculatedCarbonSavings = (totalWeight / 1000) * 3.75;
+        setCarbonSavings(calculatedCarbonSavings);
+      })
+      .catch((error) => console.error("Error fetching total waste collected:", error));
+
+    fetch("http://localhost:8085/intake/get")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch processed waste");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const totalProcessedWeight = data.reduce((sum, item) => sum + item.weight, 0);
+        setProcessedWaste(totalProcessedWeight / 1000);
+      })
+      .catch((error) => console.error("Error fetching processed waste:", error));
   }, []);
 
-  const lineChartData = {
-    labels: metrics.wasteIntakeData.map(item => item.date),
-    datasets: [
-      {
-        label: "Waste Intake Over Time (tons)",
-        data: metrics.wasteIntakeData.map(item => item.volume),
-        borderColor: "#4CAF50",
-        backgroundColor: "rgba(76, 175, 80, 0.2)",
-        tension: 0.4,
-      },
-    ],
-  };
-
   return (
-    <div className="dashboard-container">
-      <h1 className="dashboard-title">Waste Processing Dashboard</h1>
-      <div className="dashboard-metrics">
-        <div className="metric-card">
-          <h2>Total Waste Processed</h2>
-          <p>{metrics.totalWasteProcessed} tons</p>
+    <div className="contain">
+      <div className="admin-home">
+        <div className="welcome-banner">
+          <h1>Welcome {employeeName}!</h1>
+          <p>Your hub for managing agricultural waste efficiently and sustainably.</p>
         </div>
-        <div className="metric-card">
-          <h2>Total Waste Remaining</h2>
-          <p>{metrics.totalWasteRemaining} tons</p>
+
+        <div className="key-metrics">
+          <h2>Platform Statistics</h2>
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <h3>Waste Collected</h3>
+              <p>{totalWasteCollected.toFixed(2)} Tons</p>
+            </div>
+            <div className="metric-card">
+              <h3>Waste Processed</h3>
+              <p>{processedWaste.toFixed(2)} Tons</p>
+            </div>
+            <div className="metric-card">
+              <h3>Carbon Savings</h3>
+              <p>{carbonSavings.toFixed(2)} kg CO2</p>
+            </div>
+            {/* <div className="metric-card">
+              <h3>Active Users</h3>
+              <p>Farmers: {farmerCount} | Providers: {providerCount}</p>
+            </div> */}
+          </div>
         </div>
-        <div className="metric-card">
-          <h2>Completed Processing Cycles</h2>
-          <p>{metrics.totalCyclesCompleted}</p>
+
+        <div className="analytics-overview">
+          <h2>Analytics Overview</h2>
+          <div className="analytics-grid">
+            <div className="chart-container">
+              <h4>Waste Collection Trend</h4>
+              <LineChart width={300} height={300} data={wasteCollectionData}>
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="waste" stroke="#8884d8" />
+              </LineChart>
+            </div>
+            <div className="chart-container">
+              <h4>Waste Distribution</h4>
+              <PieChart width={300} height={300}>
+                <Pie
+                  data={wasteDistributionData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                >
+                  {wasteDistributionData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </div>
+            {/* <div className="chart-container">
+              <h4>Farmer Satisfaction Ratings</h4>
+              <BarChart width={300} height={300} data={satisfactionRatings}>
+                <XAxis dataKey="name" />
+                <YAxis domain={[0, 100]} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="rating" fill="#82ca9d" />
+              </BarChart>
+            </div> */}
+          </div>
         </div>
-        <div className="metric-card">
-          <h2>Available Products</h2>
-          <p>{metrics.availableProducts}</p>
-        </div>
-      </div>
-      <div className="charts-section">
-        <h2>Waste Intake Over Time</h2>
-        <Line data={lineChartData} />
-      </div>
-      <div className="collections-section">
-        <h2>Recent Collections</h2>
-        <ul>
-          {metrics.recentCollections.map((collection, index) => (
-            <li key={index}>
-              {collection.location}: {collection.wasteType} - {collection.quantity}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="processing-updates-section">
-        <h2>Processing Updates</h2>
-        <ul>
-          {metrics.processingUpdates.map((update, index) => (
-            <li key={index}>
-              {update.facility}: {update.status}
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

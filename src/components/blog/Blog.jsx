@@ -2,6 +2,7 @@ import React from "react"
 import Back from "../common/back/Back"
 import BlogCard from "./BlogCard"
 import "./blog.css"
+import Footer from "../common/footer/Footer"
 
 const Blog = () => {
   return (
@@ -12,6 +13,7 @@ const Blog = () => {
           <BlogCard />
         </div>
       </section>
+      <Footer/>
     </>
   )
 }

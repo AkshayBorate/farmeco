@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
 import axios from "axios";
+import "./Login.css";
+import { useState } from "react";
 
 export default function EmployeeLogin() {
     const [email, setEmail] = useState("");
@@ -9,16 +10,19 @@ export default function EmployeeLogin() {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
-    const f1 = async () => {
+    const handleLogin = async () => {
         try {
-            const response = await axios.get("http://localhost:9000/getemp");
-            const employee = response.data.find(
-                (emp) => emp.email === email && emp.password === password
-            );
+            const loginData = { email, password };
 
-            if (employee) {
+            const response = await axios.post("http://localhost:8085/api/employee/login", loginData);
+
+            if (response.status === 200) {
+                const employeeId = response.data.id;
+
+                localStorage.setItem("employeeId", employeeId);
+
                 alert("Login Successful!");
-                navigate("/empdash/dashboard"); // Navigate to dashboard
+                navigate("/empdash/dashboard");
             } else {
                 setErrorMessage("Invalid email or password.");
             }
@@ -35,8 +39,7 @@ export default function EmployeeLogin() {
             <div className="unique-login-container">
                 <div className="unique-form-container">
                     <Link to="/loginc" className="signup-link">Back</Link>
-                    <h1 className="unique-form-title">Employee</h1>
-                    <h2 className="unique-form-title">Sign In</h2>
+                    <h1 className="unique-form-title">Employee Login</h1>
                     <form
                         className="unique-form unique-signin-form"
                         onSubmit={(e) => e.preventDefault()}
@@ -46,7 +49,6 @@ export default function EmployeeLogin() {
                             <input
                                 className="unique-form-input"
                                 type="email"
-                                name="email"
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -57,17 +59,10 @@ export default function EmployeeLogin() {
                             <input
                                 className="unique-form-input"
                                 type="password"
-                                name="password"
                                 placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                        </div>
-                        <div className="unique-form-options">
-                            <label className="unique-checkbox-label">
-                                <input type="checkbox" id="keepSignedIn" />
-                                Keep me signed in
-                            </label>
                         </div>
                         {errorMessage && (
                             <p className="error-message">{errorMessage}</p>
@@ -75,7 +70,7 @@ export default function EmployeeLogin() {
                         <button
                             type="button"
                             className="unique-form-submit-button"
-                            onClick={f1}
+                            onClick={handleLogin}
                         >
                             Sign In
                         </button>

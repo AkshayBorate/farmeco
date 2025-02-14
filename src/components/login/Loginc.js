@@ -1,35 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Loginc.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Loginc.css";
 
 export default function Loginc() {
   return (
     <div className="login-container">
-      <div className="login-header">
-        <h1>Welcome to the Portal</h1>
-        <p>Choose your role to proceed to the login page.</p>
-      </div>
+      <header className="login-header">
+        <h1 className="title">Welcome to the Portal</h1>
+        {/* <p className="subtitle">Please select your role to continue.</p> */}
+      </header>
+
       <div className="login-options">
-        <div className="login-card admin-card">
-          <h2>Admin</h2>
-          <p>Oversee system configurations and administrative tasks.</p>
-          <button className="login-btn">
-            <Link to="/adminlogin">Login as Admin</Link>
-          </button>
+        <div className="login-card">
+          <h2>Administrator</h2>
+          <p>Manage system configurations and operations efficiently.</p>
+          <Link to="/adminlogin" className="login-btn">
+            Access Dashboard
+          </Link>
         </div>
-        <div className="login-card employee-card">
-          <h2>Employee</h2>
-          <p>Access resources and collaborate on tasks efficiently.</p>
-          <button className="login-btn">
-            <Link to="/employeelogin">Login as Employee</Link>
-          </button>
+
+        <div className="login-card">
+          <h2>Employee Portal</h2>
+          <p>Collaborate and access essential work resources.</p>
+          <Link to="/employeelogin" className="login-btn">
+            Proceed
+          </Link>
         </div>
-        <div className="login-card customer-card">
-          <h2>Customer</h2>
-          <p>Explore products and manage your account seamlessly.</p>
-          <button className="login-btn">
-            <Link to="/logins">Login as Customer</Link>
-          </button>
+
+        <div className="login-card">
+          <h2>Farmer Access</h2>
+          <p>Explore services, manage orders, and view your account.</p>
+          <Link to="/logins" className="login-btn">
+            Continue
+          </Link>
         </div>
       </div>
     </div>

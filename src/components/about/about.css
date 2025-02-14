@@ -61,7 +61,7 @@
   background-size: cover;
   background-position: center;
   height: 40vh;
-  width: 1200px;
+  width: 50% !important;
   display: block;
   margin-left: auto;
   margin-right: auto;

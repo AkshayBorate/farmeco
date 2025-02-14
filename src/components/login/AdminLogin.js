@@ -56,12 +56,7 @@ export default function AdminLogin() {
                 ref={pass}
               />
             </div>
-            <div className="unique-form-options">
-              <label className="unique-checkbox-label">
-                <input type="checkbox" id="keepSignedIn" />
-                Keep me signed in
-              </label>
-            </div>
+          
             <button type="submit" className="unique-form-submit-button">
               Sign In
             </button>

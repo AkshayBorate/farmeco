@@ -1,14 +1,23 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Adminpage.css";
 
 export default function Adminpage() {
+  const navigate = useNavigate();
+
+
+  const handleLogout =()=>{
+    if(window.confirm("are you sure you want to log out")){
+      navigate("/logins")
+    }
+  }
+
   return (
     <div className="contain">
-      <header className="ab-header ">
+      <header className="ab-header">
         <div className="ab-container">
-          <nav className="navbar navbar-expand-lg ab-navbar ">
+          <nav className="navbar navbar-expand-lg ab-navbar">
             <div className="container-fluid ab-container-fluid">
               <Link className="navbar-brand ab-navbar-brand" to="/admindash/home">
                 Admin Dashboard
@@ -57,6 +66,11 @@ export default function Adminpage() {
                           Total Users
                         </Link>
                       </li>
+                      <li>
+                        <Link className="dropdown-item ab-dropdown-item" to="/admindash/reviews">
+                          Reviews
+                        </Link>
+                      </li>
                     </ul>
                   </li>
                   <li className="nav-item dropdown ab-dropdown">
@@ -81,17 +95,15 @@ export default function Adminpage() {
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item ab-dropdown-item" to="/admindash/reviews">
-                          Reviews
+                        <Link className="dropdown-item ab-dropdown-item" to="/admindash/stock">
+                          Available Stock
                         </Link>
                       </li>
                     </ul>
                   </li>
                 </ul>
-                <button className="btn btn-outline-success ab-btn">
-                  <Link to="/" className="ab-logout-link">
-                    Logout
-                  </Link>
+                <button className="btn btn-outline-success ab-btn" onClick={handleLogout}>
+                  Logout
                 </button>
               </div>
             </div>

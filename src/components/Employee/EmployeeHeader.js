@@ -10,8 +10,11 @@ export default function EmployeeHeader() {
         <div className="ab-container">
           <nav className="navbar navbar-expand-lg ab-navbar">
             <div className="container-fluid ab-container-fluid">
-              <Link className="navbar-brand ab-navbar-brand" to="/empdash/dashboard">
-               Emplyee Dashboard
+              <Link
+                className="navbar-brand ab-navbar-brand"
+                to="/empdash/dashboard"
+              >
+                Emplyee Dashboard
               </Link>
               <button
                 className="navbar-toggler ab-navbar-toggler"
@@ -24,32 +27,101 @@ export default function EmployeeHeader() {
               >
                 <span className="navbar-toggler-icon ab-toggler-icon"></span>
               </button>
-              <div className="collapse navbar-collapse ab-navbar-collapse" id="navbarSupportedContent">
+              <div
+                className="collapse navbar-collapse ab-navbar-collapse"
+                id="navbarSupportedContent"
+              >
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0 ab-nav">
                   <li className="nav-item ab-nav-item">
-                    <Link className="nav-link ab-nav-link" to="/empdash/dashboard">
+                    <Link
+                      className="nav-link ab-nav-link"
+                      to="/empdash/dashboard"
+                    >
                       Dashboard
                     </Link>
                   </li>
+
                   <li className="nav-item ab-nav-item">
-                    <Link className="nav-link ab-nav-link" to="/empdash/wasteintake">
-                      Waste Intake
-                    </Link>
-                  </li>
-                  <li className="nav-item ab-nav-item">
-                    <Link className="nav-link ab-nav-link" to="/empdash/processingstatus">
+                    <Link
+                      className="nav-link ab-nav-link"
+                      to="/empdash/processingstatus"
+                    >
                       Processing Status
                     </Link>
                   </li>
-                  <li className="nav-item ab-nav-item">
-                    <Link className="nav-link ab-nav-link" to="/empdash/productlisting">
-                      Product Listings
+                  <li className="nav-item dropdown ab-nav-item">
+                    <Link
+                      className="nav-link dropdown-toggle ab-nav-link"
+                      to="#"
+                      id="stockDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Stock Management
+                    </Link>
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="stockDropdown"
+                    >
+                      <li>
+                        <Link className="dropdown-item" to="/empdash/addstock">
+                          Add Stock
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/empdash/productlisting">
+                          View Stock
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li className="nav-item dropdown ab-nav-item">
+                    <Link
+                      className="nav-link dropdown-toggle ab-nav-link"
+                      to="#"
+                      id="recordDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Manage Records
+                    </Link>
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="recordDropdown"
+                    >
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/empdash/wasteintake"
+                        >
+                          Add Record
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          to="/empdash/viewrecords"
+                        >
+                          View Records
+                        </Link>
+                      </li>
+                    </ul>
+                    
+                  </li>
+                </ul>
+                <li className="nav-item ab-nav-item">
+                    <Link
+                      className="nav-link ab-nav-link"
+                      to="/empdash/queries"
+                    >
+                      Queries
                     </Link>
                   </li>
-                  
-                </ul>
                 <button className="btn btn-outline-success ab-btn">
-                  <Link to="/loginc" className="ab-logout-link">
+                  <Link to="/logins" className="ab-logout-link">
                     Logout
                   </Link>
                 </button>

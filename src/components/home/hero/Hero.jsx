@@ -9,7 +9,7 @@ const Hero = () => {
       <section className="hero">
         <div className="container">
           <div className="row">
-            <Heading subtitle="WELCOME TO Jai Kisan Agro" title="Best Agri Waste Platform in India" />
+            <Heading subtitle="WELCOME TO FarmEco" title="Best Agri Waste Platform in India" />
             <p>
               Agri waste includes crop residues and manure, recycled for compost, bioenergy, or reducing pollution.
             </p>

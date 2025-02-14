@@ -1,0 +1,17 @@
+.marketplaceheader{
+  justify-content: center;
+}
+.marketplaceheader .admin-card{
+  margin: 30px;
+}
+@media screen and (max-width: 768px) {
+
+  .marketplaceheader{
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.marketplaceheader .admin-card{
+  margin: 20px;
+}
+}

@@ -13,13 +13,14 @@ const AboutCard = () => {
             <img src='./images/benifit2.jpg' alt='' />
           </div>
           <div className='right row'>
-            <Heading subtitle='Jai Kisan Agro' title='Benefits About Agri Waste Recyling' />
+            <Heading subtitle='FarmEco' title='Benefits About Agri Waste Recyling' />
             <div className='items'>
               {homeAbout.map((val) => {
                 return (
+                  
                   <div className='item flexSB'>
                     <div className='img'>
-                      <img src={val.cover} alt='' />
+                      <img src={val.cover} alt='' style={{color:"white"}}/>
                     </div>
                     <div className='text'>
                       <h2>{val.title}</h2>

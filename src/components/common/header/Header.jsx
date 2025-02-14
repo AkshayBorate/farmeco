@@ -41,20 +41,16 @@ const Header = () => {
             <li>
               <Link to="/about">About</Link>
             </li>
+           
             <li>
-              <Link to="/pricing">Pricing</Link>
+              <Link to="/journal">Blogs</Link>
             </li>
-            <li>
-              <Link to="/journal">Journal</Link>
-            </li>
-            <li>
-              <Link to="/services">Services</Link>
-            </li>
+          
             <li>
               <Link to="/contact">Contact</Link>
             </li>
-            <li className="loginc">
-              <Link to="/loginc">Login</Link>
+            <li className="loginc headlogin">
+              <Link to="/logins">Login</Link>
             </li>
           </ul>
          

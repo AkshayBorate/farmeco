@@ -1,0 +1,120 @@
+.awrapper {
+    width: 1200px !important;
+    padding: 3rem 0;
+    background-color: #f9f9f9;
+  }
+  
+  .awrapper .container {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  .awrapper .box {
+    background:transparent;
+    
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .awrapper .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .awrapper .img {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .awrapper .img img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+  
+  .awrapper .text h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .awrapper .text h3 {
+    font-size: 1.2rem;
+    color: #777;
+  }
+  
+  .about-content {
+    width: 1200px !important;
+    padding: 2rem;
+    background-color: #ffffff !important;
+    border-radius: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-content:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.about-content-card {
+    /* background-color: #333; */
+    color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    flex: 1;
+    min-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-content-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.15);
+}
+
+.about-content-card h2 {
+    font-size: 1.8rem;
+    color: #00c896;
+    margin-bottom: 1.2rem;
+    position: relative;
+    font-weight: 600;
+}
+
+.about-content-card h2::before {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #00c896;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.about-content-card p {
+    font-size: 1rem;
+    color: #ddd;
+    margin: 1rem 0;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.about-content-list {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.about-content-list li {
+    margin-bottom: 0.8rem;
+    color: #eee;
+}

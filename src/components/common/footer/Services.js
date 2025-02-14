@@ -24,7 +24,7 @@ export default function Services() {
       <footer className='ft'>
         <div className='container padding'>
           <div className='box logo'>
-            <h1>Jai Kisan Agro</h1>
+            <h1>FarmEco</h1>
             <span>Agri waste & Management Platform</span>
             <p>Transforming Waste into Wealth, Empowering Sustainable Agriculture.</p>
             <i className='fab fa-facebook-f icon'></i>
@@ -90,6 +90,11 @@ export default function Services() {
           </div>
         </div>
       </footer>
+      <div className='legal'>
+        <p>
+          Copyright ©2024 All rights reserved to FarmEco Services 
+        </p>
+      </div>
     </div>
   );
 }

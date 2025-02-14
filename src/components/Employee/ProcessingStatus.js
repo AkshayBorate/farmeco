@@ -1,468 +1,164 @@
-// import React, { useState, useEffect } from "react";
-// import { Button, ListGroup, Form, Row, Col } from "react-bootstrap";
-// import axios from "axios";
-// import "./ProcessingStatus.css";
-
-// function ProcessingStatus() {
-//   const [requests, setRequests] = useState([]);
-//   const [pickupDate, setPickupDate] = useState("");
-
-//   useEffect(() => {
-//     fetchRequests();
-//   }, []);
-
-//   const fetchRequests = async () => {
-//     try {
-//       const response = await axios.get("/api/waste-requests");
-//       setRequests(response.data);
-//     } catch (error) {
-//       console.error("Error fetching requests:", error);
-//     }
-//   };
-
-//   const handleConfirmRequest = async (requestId) => {
-//     try {
-//       await axios.put(`/api/confirm-request/${requestId}`, { status: "confirmed", pickupDate });
-//       fetchRequests();
-//     } catch (error) {
-//       console.error("Error confirming request:", error);
-//     }
-//   };
-
-//   const handleRejectRequest = async (requestId) => {
-//     try {
-//       await axios.put(`/api/reject-request/${requestId}`, { status: "rejected" });
-//       fetchRequests();
-//     } catch (error) {
-//       console.error("Error rejecting request:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//     <div className="processing-status-container">
-//       <h1>Processing Status</h1>
-//       <p>Track the status of ongoing waste processing.</p>
-
-//       <h3>Waste Requests</h3>
-//       <ListGroup>
-//         {requests.length === 0 ? (
-//           <ListGroup.Item>No requests available</ListGroup.Item>
-//         ) : (
-//           requests.map((request) => (
-//             <ListGroup.Item key={request.id}>
-//               <Row>
-//                 <Col md={6}>
-//                   <p>Type: {request.type}</p>
-//                   <p>Volume: {request.volume} tons</p>
-//                   <p>Source: {request.source}</p>
-//                   <p>Date: {request.date}</p>
-//                 </Col>
-//                 <Col md={6}>
-//                   {request.status !== "confirmed" && (
-//                     <>
-//                       <Button
-//                         variant="success"
-//                         onClick={() => handleConfirmRequest(request.id)}
-//                       >
-//                         Confirm
-//                       </Button>
-//                       <Button
-//                         variant="danger"
-//                         onClick={() => handleRejectRequest(request.id)}
-//                       >
-//                         Reject
-//                       </Button>
-//                     </>
-//                   )}
-//                   {request.status === "confirmed" && (
-//                     <p>Pickup Scheduled for: {pickupDate}</p>
-//                   )}
-//                 </Col>
-//               </Row>
-//               {request.status === "confirmed" && (
-//                 <Row className="mt-3">
-//                   <Col md={12}>
-//                     <Form.Control
-//                       type="date"
-//                       value={pickupDate}
-//                       onChange={(e) => setPickupDate(e.target.value)}
-//                       placeholder="Schedule Pickup Date"
-//                     />
-//                   </Col>
-//                 </Row>
-//               )}
-//             </ListGroup.Item>
-//           ))
-//         )}
-//       </ListGroup>
-//     </div>
-//     </div>
-//   );
-// }
-
-// export default ProcessingStatus;
-
-
-
-
-// import React, { useState, useEffect } from "react";
-// import { Button, ListGroup, Form, Row, Col, Modal, Card } from "react-bootstrap";
-// import axios from "axios";
-// import "./ProcessingStatus.css";
-
-// function ProcessingStatus() {
-//   const [requests, setRequests] = useState([]);
-//   const [pickupDate, setPickupDate] = useState("");
-//   const [driverName, setDriverName] = useState("");
-//   const [additionalInfo, setAdditionalInfo] = useState("");
-//   const [showScheduleModal, setShowScheduleModal] = useState(false);
-//   const [selectedRequest, setSelectedRequest] = useState(null);
-//   const [rejectReason, setRejectReason] = useState("");
-//   const [showRejectModal, setShowRejectModal] = useState(false);
-
-//   useEffect(() => {
-//     // Mocking API data for testing
-//     const mockRequests = [
-//       {
-//         id: 1,
-//         type: "Plastic",
-//         volume: 5,
-//         source: "Farmer A",
-//         date: "2024-12-10",
-//         status: "pending",
-//       },
-//       {
-//         id: 2,
-//         type: "Organic",
-//         volume: 3,
-//         source: "Farmer B",
-//         date: "2024-12-12",
-//         status: "pending",
-//       },
-//       {
-//         id: 3,
-//         type: "Glass",
-//         volume: 2,
-//         source: "Farmer C",
-//         date: "2024-12-11",
-//         status: "confirmed",
-//       },
-//     ];
-//     setRequests(mockRequests);
-//   }, []);
-
-//   const handleConfirmRequest = async (requestId) => {
-//     try {
-//       setRequests((prevRequests) =>
-//         prevRequests.map((request) =>
-//           request.id === requestId
-//             ? { ...request, status: "confirmed" }
-//             : request
-//         )
-//       );
-//     } catch (error) {
-//       console.error("Error confirming request:", error);
-//     }
-//   };
-
-//   const handleRejectRequest = (requestId) => {
-//     setSelectedRequest(requestId);
-//     setShowRejectModal(true);
-//   };
-
-//   const handleRejectSubmit = async () => {
-//     try {
-//       setRequests((prevRequests) =>
-//         prevRequests.map((request) =>
-//           request.id === selectedRequest
-//             ? { ...request, status: "rejected", rejectReason }
-//             : request
-//         )
-//       );
-//       setShowRejectModal(false);
-//       setRejectReason("");
-//     } catch (error) {
-//       console.error("Error rejecting request:", error);
-//     }
-//   };
-
-//   const handleSchedulePickup = (requestId) => {
-//     setSelectedRequest(requestId);
-//     setShowScheduleModal(true);
-//   };
-
-//   const handleScheduleSubmit = async () => {
-//     try {
-//       setRequests((prevRequests) =>
-//         prevRequests.map((request) =>
-//           request.id === selectedRequest
-//             ? {
-//                 ...request,
-//                 status: "pickupScheduled",
-//                 pickupDate,
-//                 driverName,
-//                 additionalInfo,
-//               }
-//             : request
-//         )
-//       );
-//       setShowScheduleModal(false);
-//       setPickupDate("");
-//       setDriverName("");
-//       setAdditionalInfo("");
-//     } catch (error) {
-//       console.error("Error scheduling pickup:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//     <div className="processing-status-container">
-//       <h1>Processing Status</h1>
-//       <p>Track the status of ongoing waste processing.</p>
-
-//       <h3>Waste Requests</h3>
-//       <div className="requests-list">
-//         {requests.length === 0 ? (
-//           <p>No requests available</p>
-//         ) : (
-//           requests.map((request) => (
-//             <Card key={request.id} className="request-card mb-3">
-//               <Card.Body>
-//                 <Row>
-//                   <Col md={6}>
-//                     <p><strong>Type:</strong> {request.type}</p>
-//                     <p><strong>Volume:</strong> {request.volume} tons</p>
-//                     <p><strong>Source:</strong> {request.source}</p>
-//                     <p><strong>Date:</strong> {request.date}</p>
-//                   </Col>
-//                   <Col md={6}>
-//                     {request.status === "pending" && (
-//                       <>
-//                         <Button
-//                           variant="success"
-//                           onClick={() => handleConfirmRequest(request.id)}
-//                           className="mr-2"
-//                         >
-//                           Confirm
-//                         </Button>
-//                         <Button
-//                           variant="danger"
-//                           onClick={() => handleRejectRequest(request.id)}
-//                         >
-//                           Reject
-//                         </Button>
-//                       </>
-//                     )}
-//                     {request.status === "confirmed" && (
-//                       <>
-//                         <p>Pickup Scheduled for: {request.pickupDate}</p>
-//                         <Button
-//                           variant="primary"
-//                           onClick={() => handleSchedulePickup(request.id)}
-//                           className="mt-2"
-//                         >
-//                           Schedule Pickup
-//                         </Button>
-//                       </>
-//                     )}
-//                     {request.status === "pickupScheduled" && (
-//                       <p>
-//                         Pickup scheduled for: {request.pickupDate}<br />
-//                         <strong>Driver Name:</strong> {request.driverName}<br />
-//                         <strong>Additional Info:</strong> {request.additionalInfo}
-//                       </p>
-//                     )}
-//                     {request.status === "rejected" && (
-//                       <p><strong>Reason for Rejection:</strong> {request.rejectReason}</p>
-//                     )}
-//                   </Col>
-//                 </Row>
-//               </Card.Body>
-//             </Card>
-//           ))
-//         )}
-//       </div>
-//       </div>
-
-      
-//       <Modal show={showRejectModal} onHide={() => setShowRejectModal(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Reject Reason</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>
-//           <Form.Group>
-//             <Form.Label>Provide a reason for rejection:</Form.Label>
-//             <Form.Control
-//               as="textarea"
-//               rows={3}
-//               value={rejectReason}
-//               onChange={(e) => setRejectReason(e.target.value)}
-//             />
-//           </Form.Group>
-//         </Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={() => setShowRejectModal(false)}>
-//             Close
-//           </Button>
-//           <Button variant="danger" onClick={handleRejectSubmit}>
-//             Submit Rejection
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-
-//       {/* Schedule Pickup Modal */}
-//       <Modal show={showScheduleModal} onHide={() => setShowScheduleModal(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Schedule Pickup</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>
-//           <Form.Group>
-//             <Form.Label>Pickup Date:</Form.Label>
-//             <Form.Control
-//               type="date"
-//               value={pickupDate}
-//               onChange={(e) => setPickupDate(e.target.value)}
-//             />
-//           </Form.Group>
-//           <Form.Group>
-//             <Form.Label>Driver Name:</Form.Label>
-//             <Form.Control
-//               type="text"
-//               value={driverName}
-//               onChange={(e) => setDriverName(e.target.value)}
-//               placeholder="Enter driver's name"
-//             />
-//           </Form.Group>
-//           <Form.Group>
-//             <Form.Label>Additional Information:</Form.Label>
-//             <Form.Control
-//               as="textarea"
-//               rows={3}
-//               value={additionalInfo}
-//               onChange={(e) => setAdditionalInfo(e.target.value)}
-//               placeholder="Enter any additional info"
-//             />
-//           </Form.Group>
-//         </Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={() => setShowScheduleModal(false)}>
-//             Close
-//           </Button>
-//           <Button variant="primary" onClick={handleScheduleSubmit}>
-//             Schedule Pickup
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-//     </div>
-//   );
-// }
-
-// export default ProcessingStatus;
-
-
-
 import React, { useState, useEffect } from "react";
 import { Button, Row, Col, Modal, Card, Form } from "react-bootstrap";
-import img1 from './img1.jpg'; 
-import img2 from './img2.jpg'; 
 import "./ProcessingStatus.css";
 
 function ProcessingStatus() {
   const [requests, setRequests] = useState([]);
   const [pickupDate, setPickupDate] = useState("");
-  const [driverName, setDriverName] = useState("");
-  const [additionalInfo, setAdditionalInfo] = useState("");
+  const [message, setMessage] = useState("");
+  const [rejectionMessage, setRejectionMessage] = useState("");
   const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [rejectReason, setRejectReason] = useState("");
-  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [filter, setFilter] = useState("NEW");
 
+  // Fetch data from API
   useEffect(() => {
-    const mockRequests = [
-      {
-        id: 1,
-        type: "Plastic",
-        volume: 5,
-        source: "Green Valley Farms",
-        date: "2024-12-10",
-        status: "pending",
-        image: img1, // Imported image
-      },
-      {
-        id: 2,
-        type: "Organic",
-        volume: 3,
-        source: "Sunnydale Orchards",
-        date: "2024-12-12",
-        status: "pending",
-        image: img1, // Imported image
-      },
-      {
-        id: 3,
-        type: "Glass",
-        volume: 2,
-        source: "Evergreen Plantation",
-        date: "2024-12-11",
-        status: "confirmed",
-        image: img2, // Imported image
-      },
-    ];
-    setRequests(mockRequests);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8085/waste-details/orders"
+        );
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setRequests(data);
+        } else {
+          console.error("Invalid data received from API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
 
-  const handleConfirmRequest = async (requestId) => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === requestId
-          ? { ...request, status: "confirmed" }
-          : request
-      )
-    );
-  };
-
-  const handleRejectRequest = (requestId) => {
-    setSelectedRequest(requestId);
-    setShowRejectModal(true);
-  };
-
-  const handleRejectSubmit = async () => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === selectedRequest
-          ? { ...request, status: "rejected", rejectReason }
-          : request
-      )
-    );
-    setShowRejectModal(false);
-    setRejectReason("");
-  };
-
-  const handleSchedulePickup = (requestId) => {
+  // Open Schedule Modal for Confirm Request
+  const handleConfirmRequest = (requestId) => {
     setSelectedRequest(requestId);
     setShowScheduleModal(true);
   };
 
-  const handleScheduleSubmit = async () => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === selectedRequest
-          ? {
-              ...request,
-              status: "pickupScheduled",
-              pickupDate,
-              driverName,
-              additionalInfo,
-            }
-          : request
-      )
-    );
-    setShowScheduleModal(false);
-    setPickupDate("");
-    setDriverName("");
-    setAdditionalInfo("");
+  // Handle Schedule Pickup
+  const handleSchedulePickup = async () => {
+    const updatedData = {
+      status: "ACCEPTED",
+      pickupDate,
+      message,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8085/waste-details/update/${selectedRequest}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        setRequests((prevRequests) =>
+          prevRequests.map((request) =>
+            request.id === selectedRequest
+              ? { ...request, ...updatedData }
+              : request
+          )
+        );
+        setShowScheduleModal(false);
+      } else {
+        console.error("Error updating request");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   };
+
+  // Handle Collect Request with Confirmation Alert
+  const handleCollectRequest = async (requestId) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to mark this request as collected?"
+    );
+    if (!isConfirmed) return;
+
+    const updatedData = {
+      status: "COLLECTED",
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8085/waste-details/update/${requestId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        setRequests((prevRequests) =>
+          prevRequests.map((request) =>
+            request.id === requestId ? { ...request, ...updatedData } : request
+          )
+        );
+        alert("Request successfully marked as collected!");
+      } else {
+        console.error("Error updating request to collected");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  // Open Rejection Modal
+  const handleRejectRequest = (requestId) => {
+    setSelectedRequest(requestId);
+    setShowRejectionModal(true);
+  };
+
+  // Handle Reject with Message
+  const handleConfirmRejection = async () => {
+    const updatedData = {
+      status: "REJECTED",
+      message: rejectionMessage,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8085/waste-details/update/${selectedRequest}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        setRequests((prevRequests) =>
+          prevRequests.map((request) =>
+            request.id === selectedRequest
+              ? { ...request, ...updatedData }
+              : request
+          )
+        );
+        setShowRejectionModal(false);
+      } else {
+        console.error("Error rejecting request");
+      }
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+    }
+  };
+
+  // Filter Requests
+  const filteredRequests = requests.filter((request) => {
+    if (filter === "ALL") return true;
+    if (filter === "NEW")
+      return !request.status || request.status === "PENDING";
+    if (filter === "SCHEDULED") return request.status === "ACCEPTED";
+    if (filter === "REJECTED") return request.status === "REJECTED";
+    if (filter === "COLLECTED") return request.status === "COLLECTED";
+    return true;
+  });
 
   return (
     <div className="container">
@@ -470,67 +166,163 @@ function ProcessingStatus() {
         <h1>Processing Status</h1>
         <p>Track the status of ongoing waste processing.</p>
 
-        <h3>Waste Requests</h3>
+        <div className="filter-buttons mb-3">
+          {/* <Button variant="secondary" onClick={() => setFilter("ALL")}>All</Button> */}
+          <Button
+            variant="info"
+            onClick={() => setFilter("NEW")}
+            className="ms-2"
+          >
+            New Requests
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => setFilter("SCHEDULED")}
+            className="ms-2"
+          >
+            Scheduled
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => setFilter("REJECTED")}
+            className="ms-2"
+          >
+            Rejected
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => setFilter("COLLECTED")}
+            className="ms-2"
+          >
+            Collected
+          </Button>
+        </div>
+
+        <h3>Waste Status</h3>
         <div className="requests-list">
-          {requests.length === 0 ? (
+          {filteredRequests.length === 0 ? (
             <p>No requests available</p>
           ) : (
-            requests.map((request) => (
+            filteredRequests.map((request) => (
               <Card key={request.id} className="request-card mb-3">
                 <Card.Img
                   variant="top"
-                  src={request.image}
-                  alt={`${request.type} image`}
+                  src={request.imagePath}
+                  alt={`${request.wasteType} image`}
                   className="card-image p-2 rounded-4"
                 />
                 <Card.Body>
                   <Row>
                     <Col md={6}>
-                      <p><strong>Type:</strong> {request.type}</p>
-                      <p><strong>Volume:</strong> {request.volume} tons</p>
-                      <p><strong>Source:</strong> {request.source}</p>
-                      <p><strong>Date:</strong> {request.date}</p>
+                      <p>
+                        <strong>Name:</strong> {request.farmer.name}
+                      </p>
+                      <p>
+                        <strong>Waste Type:</strong> {request.wasteType}
+                      </p>
+                      <p>
+                        <strong>Address:</strong> {request.address}
+                      </p>
+                      <p>
+                        <strong>Date Created:</strong>{" "}
+                        {new Date(request.createdAt).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>Date Pickup:</strong>{request.pickupDate}
+                      </p>
                     </Col>
                     <Col md={6}>
-                      {request.status === "pending" && (
+                      {request.status === "COLLECTED" && (
                         <>
-                          <Button
-                            variant="success"
-                            onClick={() => handleConfirmRequest(request.id)}
-                            className="mr-2"
-                          >
-                            Confirm
-                          </Button>
-                          <Button
-                            variant="danger"
-                            onClick={() => handleRejectRequest(request.id)}
-                          >
-                            Reject
-                          </Button>
+                          <p>
+                            <strong>Waste ID:</strong> {request.id}
+                          </p>{" "}
+                          {/* Display Farmer ID */}
+                          <p>
+                            <strong>Status:</strong> {request.status}
+                          </p>
                         </>
                       )}
-                      {request.status === "confirmed" && (
+                      {request.status === "ACCEPTED" && (
                         <>
-                          <p>Pickup Scheduled for: {request.pickupDate}</p>
+                          <p><strong>Waste ID:</strong> {request.id}</p> 
+                            <strong>Status:</strong> {request.status}<br />
+                            {/* <strong>Pickup Date:</strong> {request.pickupDate}<br /> */}
+                            <strong>Message:</strong> {request.message}
                           <Button
                             variant="primary"
-                            onClick={() => handleSchedulePickup(request.id)}
+                            onClick={async () => {
+                              const updatedData = {
+                                status: "COLLECTED",
+                              };
+
+                              try {
+                                const response = await fetch(
+                                  `http://localhost:8085/waste-details/updateOnly/${request.id}`,
+                                  {
+                                    method: "PUT",
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify(updatedData),
+                                  }
+                                );
+
+                                if (response.ok) {
+                                  setRequests((prevRequests) =>
+                                    prevRequests.map((req) =>
+                                      req.id === request.id
+                                        ? { ...req, status: "COLLECTED" }
+                                        : req
+                                    )
+                                  );
+                                  alert(
+                                    "Request successfully marked as collected!"
+                                  );
+                                } else {
+                                  console.error(
+                                    "Error updating request to collected"
+                                  );
+                                }
+                              } catch (error) {
+                                console.error("Error updating status:", error);
+                              }
+                            }}
                             className="mt-2"
                           >
-                            Schedule Pickup
+                            Mark as Collected
                           </Button>
                         </>
                       )}
-                      {request.status === "pickupScheduled" && (
+                      {request.status === "REJECTED" && (
                         <p>
-                          Pickup scheduled for: {request.pickupDate}<br />
-                          <strong>Driver Name:</strong> {request.driverName}<br />
-                          <strong>Additional Info:</strong> {request.additionalInfo}
+                          <strong>Waste ID:</strong> {request.id}
+                          <br />
+                          <br />
+                          <strong>Status:</strong> {request.status} -{" "}
+                          {request.message}
                         </p>
                       )}
-                      {request.status === "rejected" && (
-                        <p><strong>Reason for Rejection:</strong> {request.rejectReason}</p>
-                      )}
+                      {request.status !== "ACCEPTED" &&
+                        request.status !== "REJECTED" &&
+                        request.status !== "COLLECTED" && (
+                          <>
+                            <Button
+                              variant="success"
+                              onClick={() => handleConfirmRequest(request.id)}
+                              className="mt-2"
+                            >
+                              Confirm
+                            </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => handleRejectRequest(request.id)}
+                              className="mt-2 ms-2"
+                            >
+                              Reject
+                            </Button>
+                          </>
+                        )}
                     </Col>
                   </Row>
                 </Card.Body>
@@ -540,34 +332,11 @@ function ProcessingStatus() {
         </div>
       </div>
 
-      {/* Reject Reason Modal */}
-      <Modal show={showRejectModal} onHide={() => setShowRejectModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Reject Reason</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Provide a reason for rejection:</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowRejectModal(false)}>
-            Close
-          </Button>
-          <Button variant="danger" onClick={handleRejectSubmit}>
-            Submit Rejection
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
       {/* Schedule Pickup Modal */}
-      <Modal show={showScheduleModal} onHide={() => setShowScheduleModal(false)}>
+      <Modal
+        show={showScheduleModal}
+        onHide={() => setShowScheduleModal(false)}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Schedule Pickup</Modal.Title>
         </Modal.Header>
@@ -581,31 +350,58 @@ function ProcessingStatus() {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Driver Name:</Form.Label>
-            <Form.Control
-              type="text"
-              value={driverName}
-              onChange={(e) => setDriverName(e.target.value)}
-              placeholder="Enter driver's name"
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Additional Information:</Form.Label>
+            <Form.Label>Additional Message:</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              value={additionalInfo}
-              onChange={(e) => setAdditionalInfo(e.target.value)}
-              placeholder="Enter any additional info"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Enter any additional message"
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowScheduleModal(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setShowScheduleModal(false)}
+          >
             Close
           </Button>
-          <Button variant="primary" onClick={handleScheduleSubmit}>
+          <Button variant="primary" onClick={handleSchedulePickup}>
             Schedule Pickup
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Rejection Modal */}
+      <Modal
+        show={showRejectionModal}
+        onHide={() => setShowRejectionModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Rejection Reason</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group>
+            <Form.Label>Rejection Message:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={rejectionMessage}
+              onChange={(e) => setRejectionMessage(e.target.value)}
+              placeholder="Enter rejection reason"
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowRejectionModal(false)}
+          >
+            Close
+          </Button>
+          <Button variant="danger" onClick={handleConfirmRejection}>
+            Reject
           </Button>
         </Modal.Footer>
       </Modal>
@@ -614,3 +410,7 @@ function ProcessingStatus() {
 }
 
 export default ProcessingStatus;
+
+
+
+

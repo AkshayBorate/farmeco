@@ -6,6 +6,8 @@ export default function Serve() {
     <div>
        <Back title='Services' /> 
        <Services/>
+       
     </div>
+    
   )
 }

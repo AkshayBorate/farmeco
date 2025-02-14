@@ -5,6 +5,7 @@ import HAbout from "./HAbout"
 import Hero from "./hero/Hero"
 import Hprice from "./Hprice"
 import Services from "../../components/common/footer/Services"
+import Footer from "../common/footer/Footer"
 
 
 const Home = () => {
@@ -14,8 +15,9 @@ const Home = () => {
       <AboutCard />
       <HAbout />
       <Hblog />
-      <Hprice />
-      <Services/>
+      {/* <Hprice /> */}
+      {/* <Services/> */}
+      <Footer/>
     </>
   )
 }
